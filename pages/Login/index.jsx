@@ -6,7 +6,7 @@ import axios from "axios";
 function Login() {
   const [textUsername, setTextUsername] = useState("");
   const [textPassword, setTextPassword] = useState("");
-	const [hasError, setHasError] = useState(false);
+  const [hasError, setHasError] = useState(false);
 
   const tryLogin = async () => {
     const body = { username: textUsername, password: textPassword };
@@ -16,21 +16,18 @@ function Login() {
         "https://dummyjson.com/auth/login",
         body
       );
-      console.log(data);
-			console.log(status)
 
-			if(status === 200) {
-				localStorage.setItem("username", data.username)
-				localStorage.setItem("token", data.token)
+      if (status === 200) {
+        localStorage.setItem("username", data.username);
+        localStorage.setItem("token", data.token);
 
-				window.location = "/"
-			} else {
-				setHasError(true)
-			}
+        window.location = "/";
+      } else {
+        setHasError(true);
+      }
     } catch (e) {
-			console.log(e)
-			setHasError(true)
-		}
+      setHasError(true);
+    }
   };
 
   return (
@@ -50,7 +47,7 @@ function Login() {
           className="p-1 rounded my-3 w-56"
           onChange={(e) => setTextPassword(e.target.value)}
         />
-				{hasError && (<span>Usuário ou senha errado.</span>)}
+        {hasError && <span>Usuário ou senha errado.</span>}
         <button
           className="bg-blue-700 transition duration-150 hover:bg-blue-600 cursor-pointer rounded-md font-bold p-3 text-slate-200 mt-7"
           onClick={tryLogin}

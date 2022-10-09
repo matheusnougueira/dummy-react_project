@@ -28,8 +28,6 @@ const Product = (props) => {
       setProduct({ ...data });
       if (data?.images) setImageSelected(data.images[0]);
     } catch (error) {
-      console.log(error);
-      // console.log({status})
       const status = error.response.status;
       if (status >= 401) {
         window.location = "/login";
