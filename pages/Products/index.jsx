@@ -1,26 +1,11 @@
-import Link from "next/link";
 import { useEffect, useState } from "react";
 import ButtonPagination from "../../components/ButtonPagination";
 import CardProduct from "../../components/CardProduct";
 import axios from "axios";
 
-// export const getStaticProps = async (context) => {
-//   console.log(context)
-//   const responseProducts = await fetch("https://dummyjson.com/products");
-//   const data = await responseProducts.json();
-
-//   return {
-//     // revalidate: 20,
-//     props: {
-//       products: data.products || [],
-//     },
-//   };
-// };
-
 export const getServerSideProps = async (context) => {
   const { query } = context;
   const { page, search } = query;
-  console.log({ search });
   const params = new URLSearchParams([["q", search]]);
   let url = "";
   if (search) {
@@ -32,7 +17,7 @@ export const getServerSideProps = async (context) => {
   const { data } = await axios.get(url, {
     params,
   });
-  
+
   return {
     props: {
       products: data.products || [],
@@ -131,7 +116,7 @@ const Products = (props) => {
       <div className="flex flex-wrap px-5">
         {products.length == 0
           ? "Não há produtos nessa página."
-          : products.map((el) => <CardProduct product={el} key={el}/>)}
+          : products.map((el, i) => <CardProduct product={el} key={i} />)}
       </div>
 
       {/* Paginação */}
@@ -148,7 +133,11 @@ const Products = (props) => {
 
         {/* Botões da paginação */}
         {numPages.map((el, i) => (
-          <a href={`/products?page=${el}`} className="no-underline flex" key={i}>
+          <a
+            href={`/products?page=${el}`}
+            className="no-underline flex"
+            key={i}
+          >
             <ButtonPagination page={props.page}>{el}</ButtonPagination>
           </a>
         ))}

@@ -14,9 +14,8 @@ const Product = (props) => {
   const [product, setProduct] = useState(null);
   const [imageSelected, setImageSelected] = useState(null);
 
-  const { id } = props;
-
   const getProduct = async () => {
+    const { id } = props;
     try {
       const { data } = await axios(
         `https://dummyjson.com/auth/products/${id}`,
@@ -47,7 +46,7 @@ const Product = (props) => {
   } else {
     return (
       <div className="flex h-screen justify-center items-center">
-        <div className="flex flex-row bg-slate-100 p-8 rounded-md ">
+        <div className="flex flex-row bg-slate-100 p-8 rounded-md">
           <div className="flex flex-col">
             {product?.images &&
               product.images.map((el, i) => (
