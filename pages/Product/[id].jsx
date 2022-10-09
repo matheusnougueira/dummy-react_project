@@ -1,14 +1,8 @@
-import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
 import axios from "axios";
 
-// export const getStaticProps = async (context) => {
-
-// };
-
 export const getServerSideProps = async (context) => {
   const { query } = context;
-  // console.log(context);
   return {
     props: {
       id: query.id,
@@ -39,7 +33,7 @@ const Product = (props) => {
       // console.log({status})
       const status = error.response.status;
       if (status >= 401) {
-        window.location = "/Login";
+        window.location = "/login";
       }
     }
   };
@@ -58,6 +52,7 @@ const Product = (props) => {
             {product?.images &&
               product.images.map((el, i) => (
                 <img
+                  alt="Imagem do produto"
                   key={i}
                   src={el}
                   className={`first:mt-0 my-1 border-solid border-2 ${
@@ -69,6 +64,7 @@ const Product = (props) => {
               ))}
           </div>
           <img
+            alt="Imagem do produto"
             src={imageSelected}
             className="w-96 h-96 object-contain bg-slate-200 ml-2 rounded-md"
           />
@@ -102,10 +98,14 @@ const Product = (props) => {
 
             <span className="text-xl mt-5 text-slate-700">
               <span className="font-bold">Em: </span>
-              <span className="text-green-600">10x {(product.price/10).toLocaleString("en-US", {
-                    style: "currency",
-                    currency: "USD",
-                  })} sem juros</span>
+              <span className="text-green-600">
+                10x{" "}
+                {(product.price / 10).toLocaleString("en-US", {
+                  style: "currency",
+                  currency: "USD",
+                })}{" "}
+                sem juros
+              </span>
             </span>
 
             <span className="text-xl mt-5 text-slate-700">

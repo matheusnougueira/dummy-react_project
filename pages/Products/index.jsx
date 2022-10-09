@@ -83,7 +83,7 @@ const Products = (props) => {
   };
 
   const onSearch = () => {
-    window.location = `/Products?search=${textSearch}`;
+    window.location = `/products?search=${textSearch}`;
   };
 
   useEffect(() => {
@@ -118,7 +118,7 @@ const Products = (props) => {
           <span className="p-1 px-3 bg-slate-300 rounded-md flex w-fit items-center">
             {props.search}
             <span
-              onClick={() => (window.location = "/Products")}
+              onClick={() => (window.location = "/products")}
               className="cursor-pointer ml-1 bg-slate-400 rounded-full w-5 h-5 flex justify-center items-end transition duration-200 hover:bg-red-500 hover:font-bold"
             >
               x
@@ -131,7 +131,7 @@ const Products = (props) => {
       <div className="flex flex-wrap px-5">
         {products.length == 0
           ? "Não há produtos nessa página."
-          : products.map((el) => <CardProduct product={el} />)}
+          : products.map((el) => <CardProduct product={el} key={el}/>)}
       </div>
 
       {/* Paginação */}
@@ -139,7 +139,7 @@ const Products = (props) => {
         {/* Botão de "<" */}
         {!Number(props.page < 2) && (
           <a
-            href={`/Products?page=${props.page - 1}`}
+            href={`/products?page=${props.page - 1}`}
             className="no-underline flex"
           >
             <ButtonPagination>{"<"}</ButtonPagination>
@@ -148,7 +148,7 @@ const Products = (props) => {
 
         {/* Botões da paginação */}
         {numPages.map((el, i) => (
-          <a href={`/Products?page=${el}`} className="no-underline flex" key={i}>
+          <a href={`/products?page=${el}`} className="no-underline flex" key={i}>
             <ButtonPagination page={props.page}>{el}</ButtonPagination>
           </a>
         ))}
@@ -157,7 +157,7 @@ const Products = (props) => {
         {itensPerPage * actualPage + 1 <= total &&
           itensPerPage * actualPage + 1 + (total % actualPage) <= total && (
             <a
-              href={`/Products?page=${Number(props.page) + 1}`}
+              href={`/products?page=${Number(props.page) + 1}`}
               className="no-underline flex"
             >
               <ButtonPagination>{">"}</ButtonPagination>

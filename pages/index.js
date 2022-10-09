@@ -5,7 +5,7 @@ import styles from "../styles/Home.module.css";
 
 export default function Home() {
   useEffect(() => {
-    window.location = "/Products";
+    window.location = "/products";
   }, []);
   return <></>;
 }

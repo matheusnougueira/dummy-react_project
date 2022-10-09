@@ -50,7 +50,7 @@ function Login() {
           className="p-1 rounded my-3 w-56"
           onChange={(e) => setTextPassword(e.target.value)}
         />
-				{hasError && (<span>Erro ao logar</span>)}
+				{hasError && (<span>Usuário ou senha errado.</span>)}
         <button
           className="bg-blue-700 transition duration-150 hover:bg-blue-600 cursor-pointer rounded-md font-bold p-3 text-slate-200 mt-7"
           onClick={tryLogin}
