@@ -1,11 +1,16 @@
 import Link from "next/link";
 import React from "react";
+import { IProduct } from "../Interfaces/IProduct";
 
-function CardProduct({ product }) {
+interface ICardProduct {
+  product: IProduct;
+}
+
+function CardProduct({ product }: ICardProduct) {
   return (
     <Link href={`/product/${product.id}`} key={product.id}>
       <div
-        className="flex-auto w-48 h-96 bg-slate-50 mt-5 ml-5 p-3 drop-shadow-md rounded-md 
+        className="flex-auto w-52 h-96 bg-slate-50 mt-5 ml-5 p-3 drop-shadow-md rounded-md 
                   cursor-pointer transition duration-150 hover:drop-shadow-xl
                   hover:scale-105"
       >

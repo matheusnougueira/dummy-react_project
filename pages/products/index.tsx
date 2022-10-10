@@ -1,12 +1,23 @@
-import { useEffect, useState } from "react";
+import { Context, useEffect, useState } from "react";
 import ButtonPagination from "../../components/ButtonPagination";
 import CardProduct from "../../components/CardProduct";
 import axios from "axios";
+import { IProduct } from "../../Interfaces/IProduct";
 
-export const getServerSideProps = async (context) => {
+interface IQueryContext {
+  page: string;
+  search: string;
+}
+
+interface IContext {
+  query: IQueryContext
+}
+
+export const getServerSideProps = async (context: IContext) => {
   const { query } = context;
   const { page, search } = query;
-  const params = new URLSearchParams([["q", search]]);
+  const skip = !page || page == "1" ? 0 : 12 * (Number(page) - 1)
+  const params = new URLSearchParams({q: search, skip: skip.toString(), limit: "12"});
   let url = "";
   if (search) {
     url = "https://dummyjson.com/products/search";
@@ -21,7 +32,7 @@ export const getServerSideProps = async (context) => {
   return {
     props: {
       products: data.products || [],
-      page: page || 1,
+      page: Number(page) || 1,
       totalItems: Number(data.total),
       itensPerPage: 12,
       search: search || null,
@@ -29,9 +40,17 @@ export const getServerSideProps = async (context) => {
   };
 };
 
-const Products = (props) => {
-  const [numPages, setNumPages] = useState([]);
-  const [textSearch, setTextSearch] = useState("");
+interface IProps {
+  products: [],
+  page: number;
+  totalItems: number;
+  itensPerPage: number;
+  search: string | null;
+}
+
+const products = (props: IProps) => {
+  const [numPages, setNumPages] = useState<number[]>([]);
+  const [textSearch, setTextSearch] = useState<string>("");
 
   const actualPage = Number(props.page);
   const total = props.totalItems;
@@ -39,8 +58,8 @@ const Products = (props) => {
   const products = props.products;
 
   const calculateNumPages = () => {
-    const _numPages = [];
-    let _page = Number(props.page);
+    const _numPages: number[] = [];
+    const _page: number = Number(props.page);
 
     // adiciona os botões anteriores à página atual
     for (let i = 2; i >= 1; i--) {
@@ -57,8 +76,8 @@ const Products = (props) => {
       for (let i = 1; i <= 2; i++) {
         const _numPage = _page + i;
         if (
-          itensPerPage * _numPage <= total &&
-          itensPerPage * _numPage + (total % _numPage) <= total
+          itensPerPage * _numPage <= total ||
+          (_numPage - 1) * 12 <= total
         )
           _numPages.push(_numPage);
       }
@@ -68,7 +87,7 @@ const Products = (props) => {
   };
 
   const onSearch = () => {
-    window.location = `/products?search=${textSearch}`;
+    window.location.href = `/products?search=${textSearch}`;
   };
 
   useEffect(() => {
@@ -103,7 +122,7 @@ const Products = (props) => {
           <span className="p-1 px-3 bg-slate-300 rounded-md flex w-fit items-center">
             {props.search}
             <span
-              onClick={() => (window.location = "/products")}
+              onClick={() => (window.location.href = "/products")}
               className="cursor-pointer ml-1 bg-slate-400 rounded-full w-5 h-5 flex justify-center items-end transition duration-200 hover:bg-red-500 hover:font-bold"
             >
               x
@@ -116,7 +135,7 @@ const Products = (props) => {
       <div className="flex flex-wrap px-5">
         {products.length == 0
           ? "Não há produtos nessa página."
-          : products.map((el, i) => <CardProduct product={el} key={i} />)}
+          : products.map((el: IProduct, i: number) => <CardProduct product={el} key={i} />)}
       </div>
 
       {/* Paginação */}
@@ -132,7 +151,7 @@ const Products = (props) => {
         )}
 
         {/* Botões da paginação */}
-        {numPages.map((el, i) => (
+        {numPages.map((el: number, i: number) => (
           <a
             href={`/products?page=${el}`}
             className="no-underline flex"
@@ -144,7 +163,7 @@ const Products = (props) => {
 
         {/* Botãod de ">" */}
         {itensPerPage * actualPage + 1 <= total &&
-          itensPerPage * actualPage + 1 + (total % actualPage) <= total && (
+          (actualPage - 1) * 12 <= total && (
             <a
               href={`/products?page=${Number(props.page) + 1}`}
               className="no-underline flex"
@@ -158,4 +177,4 @@ const Products = (props) => {
   );
 };
 
-export default Products;
+export default products;

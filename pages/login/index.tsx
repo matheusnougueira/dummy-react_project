@@ -3,10 +3,10 @@ import axios from "axios";
 
 // import { Container } from './styles';
 
-function Login() {
-  const [textUsername, setTextUsername] = useState("");
-  const [textPassword, setTextPassword] = useState("");
-  const [hasError, setHasError] = useState(false);
+function login() {
+  const [textUsername, setTextUsername] = useState<string>("");
+  const [textPassword, setTextPassword] = useState<string>("");
+  const [hasError, setHasError] = useState<boolean>(false);
 
   const tryLogin = async () => {
     const body = { username: textUsername, password: textPassword };
@@ -21,7 +21,7 @@ function Login() {
         localStorage.setItem("username", data.username);
         localStorage.setItem("token", data.token);
 
-        window.location = "/";
+        window.location.href = "/";
       } else {
         setHasError(true);
       }
@@ -59,4 +59,4 @@ function Login() {
   );
 }
 
-export default Login;
+export default login;

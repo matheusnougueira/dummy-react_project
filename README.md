@@ -7,6 +7,7 @@
 ## Tecnologias
 
 - [Next.js](https://nextjs.org/docs);
+- [Typescript](https://www.typescriptlang.org/docs/);
 - [Tailwind](https://nextjs.org/docs).
 
 ## Rodando projeto

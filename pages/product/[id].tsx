@@ -1,7 +1,8 @@
 import { useEffect, useState } from "react";
 import axios from "axios";
+import { IProduct } from "../../Interfaces/IProduct";
 
-export const getServerSideProps = async (context) => {
+export const getServerSideProps = async (context: any) => {
   const { query } = context;
   return {
     props: {
@@ -10,9 +11,13 @@ export const getServerSideProps = async (context) => {
   };
 };
 
-const Product = (props) => {
-  const [product, setProduct] = useState(null);
-  const [imageSelected, setImageSelected] = useState(null);
+interface IProps {
+  id: number | string
+}
+
+const product = (props: IProps) => {
+  const [product, setProduct] = useState<null | IProduct>(null);
+  const [imageSelected, setImageSelected] = useState<any>(null);
 
   const getProduct = async () => {
     const { id } = props;
@@ -27,10 +32,10 @@ const Product = (props) => {
       );
       setProduct({ ...data });
       if (data?.images) setImageSelected(data.images[0]);
-    } catch (error) {
+    } catch (error: any) {
       const status = error.response.status;
       if (status >= 401) {
-        window.location = "/login";
+        window.location.href = "/login";
       }
     }
   };
@@ -44,10 +49,11 @@ const Product = (props) => {
   } else {
     return (
       <div className="flex h-screen justify-center items-center">
-        <div className="flex flex-row bg-slate-100 p-8 rounded-md">
-          <div className="flex flex-col">
+        {/* flex flex-col md:flex-row h-screen w-screen m-3 */}
+        <div className="flex flex-col md:flex-row bg-slate-100 p-8 rounded-md ">
+          <div className="flex flex-row md:flex-col">
             {product?.images &&
-              product.images.map((el, i) => (
+              product.images.map((el: string, i: number) => (
                 <img
                   alt="Imagem do produto"
                   key={i}
@@ -116,4 +122,4 @@ const Product = (props) => {
   }
 };
 
-export default Product;
+export default product;
