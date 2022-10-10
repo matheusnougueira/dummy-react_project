@@ -8,7 +8,7 @@
 
 - [Next.js](https://nextjs.org/docs);
 - [Typescript](https://www.typescriptlang.org/docs/);
-- [Tailwind](https://nextjs.org/docs).
+- [Tailwind](https://tailwindcss.com).
 
 ## Rodando projeto
 
