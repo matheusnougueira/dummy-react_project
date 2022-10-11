@@ -6,4 +6,5 @@ export interface IProduct {
   discountPercentage: number;
   stock: number;
   images: string[];
+  category: string;
 }

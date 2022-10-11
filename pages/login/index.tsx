@@ -18,6 +18,7 @@ function login() {
       );
 
       if (status === 200) {
+        console.log('imagem', data.image)
         localStorage.setItem("username", data.username);
         localStorage.setItem("token", data.token);
 

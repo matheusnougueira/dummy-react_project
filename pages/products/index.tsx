@@ -1,8 +1,10 @@
 import { Context, useEffect, useState } from "react";
-import ButtonPagination from "../../components/ButtonPagination";
-import CardProduct from "../../components/CardProduct";
+import ButtonPaginationComponent from "../../components/ButtonPaginationComponent";
+import CardProductComponent from "../../components/CardProductComponent";
+import SearchComponent from "../../components/SearchComponent";
 import axios from "axios";
 import { IProduct } from "../../Interfaces/IProduct";
+import HeaderComponent from "../../components/HeaderComponent";
 
 interface IQueryContext {
   page: string;
@@ -10,14 +12,18 @@ interface IQueryContext {
 }
 
 interface IContext {
-  query: IQueryContext
+  query: IQueryContext;
 }
 
 export const getServerSideProps = async (context: IContext) => {
   const { query } = context;
   const { page, search } = query;
-  const skip = !page || page == "1" ? 0 : 12 * (Number(page) - 1)
-  const params = new URLSearchParams({q: search, skip: skip.toString(), limit: "12"});
+  const skip = !page || page == "1" ? 0 : 12 * (Number(page) - 1);
+  const params = new URLSearchParams({
+    q: search,
+    skip: skip.toString(),
+    limit: "12",
+  });
   let url = "";
   if (search) {
     url = "https://dummyjson.com/products/search";
@@ -41,7 +47,7 @@ export const getServerSideProps = async (context: IContext) => {
 };
 
 interface IProps {
-  products: [],
+  products: [];
   page: number;
   totalItems: number;
   itensPerPage: number;
@@ -50,7 +56,6 @@ interface IProps {
 
 const products = (props: IProps) => {
   const [numPages, setNumPages] = useState<number[]>([]);
-  const [textSearch, setTextSearch] = useState<string>("");
 
   const actualPage = Number(props.page);
   const total = props.totalItems;
@@ -75,19 +80,12 @@ const products = (props: IProps) => {
     if (!(props.products.length < itensPerPage)) {
       for (let i = 1; i <= 2; i++) {
         const _numPage = _page + i;
-        if (
-          itensPerPage * _numPage <= total ||
-          (_numPage - 1) * 12 <= total
-        )
+        if (itensPerPage * _numPage <= total || (_numPage - 1) * 12 <= total)
           _numPages.push(_numPage);
       }
     }
 
     setNumPages([..._numPages]);
-  };
-
-  const onSearch = () => {
-    window.location.href = `/products?search=${textSearch}`;
   };
 
   useEffect(() => {
@@ -97,23 +95,7 @@ const products = (props: IProps) => {
   return (
     <div className="py-2">
       {/* Pesquisa */}
-      <div className="flex justify-center mt-4">
-        <div className="rounded-md px-1 drop-shadow-md bg-slate-50">
-          <input
-            type="text"
-            onChange={(e) => setTextSearch(e.target.value)}
-            onKeyDown={(e) => e.key == "Enter" && onSearch()}
-            className="bg-transparent p-1"
-            placeholder="Pesquisar produto..."
-          />
-          <span
-            onClick={onSearch}
-            className="border-l-2 border-solid px-0.5 ml-1 cursor-pointer transition duration-200 hover:bg-slate-200"
-          >
-            🔍
-          </span>
-        </div>
-      </div>
+      <HeaderComponent/>
 
       {/* Filtro de pesquisa */}
       {props.search && (
@@ -135,7 +117,9 @@ const products = (props: IProps) => {
       <div className="flex flex-wrap px-5">
         {products.length == 0
           ? "Não há produtos nessa página."
-          : products.map((el: IProduct, i: number) => <CardProduct product={el} key={i} />)}
+          : products.map((el: IProduct, i: number) => (
+              <CardProductComponent product={el} key={i} />
+            ))}
       </div>
 
       {/* Paginação */}
@@ -146,7 +130,7 @@ const products = (props: IProps) => {
             href={`/products?page=${props.page - 1}`}
             className="no-underline flex"
           >
-            <ButtonPagination>{"<"}</ButtonPagination>
+            <ButtonPaginationComponent>{"<"}</ButtonPaginationComponent>
           </a>
         )}
 
@@ -157,7 +141,9 @@ const products = (props: IProps) => {
             className="no-underline flex"
             key={i}
           >
-            <ButtonPagination page={props.page}>{el}</ButtonPagination>
+            <ButtonPaginationComponent page={props.page}>
+              {el}
+            </ButtonPaginationComponent>
           </a>
         ))}
 
@@ -168,7 +154,7 @@ const products = (props: IProps) => {
               href={`/products?page=${Number(props.page) + 1}`}
               className="no-underline flex"
             >
-              <ButtonPagination>{">"}</ButtonPagination>
+              <ButtonPaginationComponent>{">"}</ButtonPaginationComponent>
             </a>
           )}
       </div>

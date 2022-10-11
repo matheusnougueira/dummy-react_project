@@ -6,7 +6,7 @@ interface ICardProduct {
   product: IProduct;
 }
 
-function CardProduct({ product }: ICardProduct) {
+function CardProductComponent({ product }: ICardProduct) {
   return (
     <Link href={`/product/${product.id}`} key={product.id}>
       <div
@@ -47,4 +47,4 @@ function CardProduct({ product }: ICardProduct) {
   );
 }
 
-export default CardProduct;
+export default CardProductComponent;

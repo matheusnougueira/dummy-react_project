@@ -1,6 +1,6 @@
 import React from "react";
 
-function ButtonPagination(props: any) {
+function ButtonPaginationComponent(props: any) {
   return (
     <span
       className={`cursor-pointer pt-1 px-2 mx-0.5 drop-shadow-md 
@@ -16,4 +16,4 @@ function ButtonPagination(props: any) {
   );
 }
 
-export default ButtonPagination;
+export default ButtonPaginationComponent;
